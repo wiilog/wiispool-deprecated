@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Impression Pdf automatique</title>
+    <link rel="stylesheet" href="./style.css" />
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="columns">
+        <div class="column col-12 flex-centered">
+          <button id="disable" class="btn btn-primary">
+            Activer l'impression
+          </button>
+        </div>
+        <div class="column col-12 flex-centered" id="printerselectform">
+          <div class="form-group">
+            <label class="form-label" for="input-example-1" id="labelprinterlistid">Sélectionner une imprimante</label>
+            <select class="form-select" id="printerlistid">
+              <option>Chargement en cours...</option>
+            </select>
+          </div>
+        </div>
+        <div class="column col-12 flex-centered" id="selectdirectorytowatch">
+          <div class="form-group">
+            <label class="form-label text-center" for="">Sélectionner un dossier</label>
+            <button class="btn primary" id="btnselectdirtowatch">Parcourir</button>
+          </div>
+        </div>
+        <div class="columns col-12" id="printerlistid">
+          
+        </div>
+        <div class="column col-12 flex-centered" id="informations">
+          <p class="text-tiny"> MIT Licence - Wiilog</p>
+        </div>
+
+      </div>
+    </div>
+    <!-- Prossecc renderer -->
+    <script src="./renderer.js"></script>
+  </body>
+</html>

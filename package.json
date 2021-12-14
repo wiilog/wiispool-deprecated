@@ -1,0 +1,58 @@
+{
+  "name": "WiilogSpool",
+  "version": "2.0.1",
+  "description": "Impressin auto PDF de fichier ETQ Wiilog",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "author": "Benoit Coste",
+  "license": "MIT - Wiilog",
+  "dependencies": {
+    "chokidar": "^3.5.2",
+    "electron-squirrel-startup": "^1.0.0",
+    "jsonfile": "^6.1.0",
+    "pdf-to-printer": "^2.0.6",
+    "spectre.css": "^0.5.9"
+  },
+  "icon": "Graphicloads-Folded-Barcode-folded",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.59",
+    "@electron-forge/maker-deb": "^6.0.0-beta.59",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.59",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.59",
+    "@electron-forge/maker-zip": "^6.0.0-beta.59",
+    "electron": "^13.6.3"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "C:/dev/my-electron-app/public/Graphicloads-Folded-Barcode-folded.ico"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "my_electron_app"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
+}
