@@ -1,16 +1,16 @@
 // C:\Users\sdkca\Desktop\electron-workspace\build.js
-var electronInstaller = require('electron-winstaller');
+const electronInstaller = require('electron-winstaller');
 
 // In this case, we can use relative paths
-var settings = {
+const settings = {
     // Specify the folder where the built app is located
-    appDirectory: './wiispool-built-win32-x64',
+    appDirectory: './wiispool-win32-x64',
     // Specify the existing folder where
     outputDirectory: './installers',
     // The name of the Author of the app (the name of your company)
     authors: 'Wiilog.',
     // The name of the executable of your built
-    exe: './wiispool-built.exe',
+    exe: './wiispool.exe',
 };
 
 resultPromise = electronInstaller.createWindowsInstaller(settings);
