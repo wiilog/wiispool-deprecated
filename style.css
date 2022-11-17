@@ -653,34 +653,11 @@ html:lang(ko),
   margin-left: 0.125em;
 }
 
-.table {
+.prefix-liste-table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
   text-align: left;
-}
-.table.table-striped tbody tr:nth-of-type(odd) {
-  background: #f7f8f9;
-}
-.table tbody tr.active, .table.table-striped tbody tr.active {
-  background: #eef0f3;
-}
-.table.table-hover tbody tr:hover {
-  background: #eef0f3;
-}
-.table.table-scroll {
-  display: block;
-  overflow-x: auto;
-  padding-bottom: 0.75rem;
-  white-space: nowrap;
-}
-.table td,
-.table th {
-  border-bottom: 0.05rem solid #dadee4;
-  padding: 0.6rem 0.4rem;
-}
-.table th {
-  border-bottom-width: 0.1rem;
 }
 
 .btn {
@@ -3233,6 +3210,18 @@ a.text-error:visited {
   justify-content: center;
 }
 
+.flex-between {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-around {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+}
+
 .m-0 {
   margin: 0 !important;
 }
@@ -3281,6 +3270,10 @@ a.text-error:visited {
 
 .mt-1 {
   margin-top: 0.2rem !important;
+}
+
+.mt-3 {
+  margin-top: 0.5rem !important;
 }
 
 .mx-1 {
@@ -3461,14 +3454,6 @@ a.text-error:visited {
   font-style: italic;
 }
 
-.text-large {
-  font-size: 1.2em;
-}
-
-.text-small {
-  font-size: 0.9em;
-}
-
 .text-tiny {
   font-size: 0.8em;
 }
@@ -3495,4 +3480,130 @@ a.text-error:visited {
   word-wrap: break-word;
 }
 
+.button-plus {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid #095776;
+
+  top: 50%;
+  left: 50%;
+}
+
+.button-plus:after {
+  content: '';
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 4px;
+  width: 50%;
+  background: #095776;
+  top: 50%;
+  left: 50%;
+}
+
+.button-plus:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #095776;
+  height: 50%;
+  width: 4px;
+}
+
+.button-plus:hover:before,
+.button-plus:hover:after {
+  background: #fff;
+  transition: 0.2s;
+}
+
+.button-plus:hover {
+  background-color: #095776;
+  transition: 0.2s;
+}
 /*# sourceMappingURL=style.css.map */
+.wii-modal{
+  background: white;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.wii-modal.open{
+  display: block;
+}
+
+.w-auto {
+  width: auto !important;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.container-logo {
+  align-items: center;
+}
+.text-wiilog {
+  font-weight: bolder;
+  font-size: 3em;
+}
+.logoWiilog {
+  width: 150px;
+}
+
+td {
+  border: 1px solid #333;
+}
+
+th {
+  border: 1px solid #333;
+}
+
+thead,
+tfoot {
+    color: black;
+  font-weight: bolder;
+}
+
+.m-h200 {
+  min-height: 200px;
+}
+
+.trash-logo {
+  background-image: url("./public/img/trash.png");
+  background-position: center;
+  background-size: contain;
+  width: 30px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.edit-logo {
+  background-image: url("./public/img/pen-solid.svg");
+  background-position: center;
+  background-size: contain;
+  width: 30px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+#errorMsg {
+  font-weight: bold;
+  color: red;
+}

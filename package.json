@@ -1,18 +1,20 @@
 {
-  "name": "WiilogSpool",
+  "name": "WiiSpool",
   "version": "2.0.2",
-  "description": "Impression auto PDF de fichier ETQ Wiilog",
+  "description": "Impression auto d'etiquettes Wiilog",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
-  "author": "Benoit Coste",
+  "author": "Cédric Roux",
   "license": "MIT - Wiilog",
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "chokidar": "^3.5.2",
     "electron-squirrel-startup": "^1.0.0",
+    "jquery": "^3.6.0",
     "jsonfile": "^6.1.0",
     "meow": "^10.1.2",
     "pdf-to-printer": "^5.3.0",

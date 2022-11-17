@@ -1,46 +1,87 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Impression Pdf automatique</title>
-    <link rel="stylesheet" href="./style.css" />
-
-  </head>
-  <body>
-    <div class="container">
-      <div class="columns">
-        <div class="column col-12 flex-centered">
-          <button id="disable" class="btn btn-primary">
-            Activer l'impression
-          </button>
+    <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+<div class="wii-modal mr-2" id="modalPrefix">
+    <div class="flex-column">
+        <div class="container flex-around">
+            <label class="form-label text-center"
+                   for="name">Ajouter un préfixe :</label>
+            <input type="text"
+                   id="prefixName"
+                   name="prefixName"
+                   required>
         </div>
-        <div class="column col-12 flex-centered" id="printerselectform">
-          <div class="form-group">
-            <label class="form-label" for="input-example-1" id="labelprinterlistid">Sélectionner une imprimante</label>
-            <select class="form-select" id="printerlistid">
-              <option>Chargement en cours...</option>
-            </select>
-          </div>
+        <div id="errorMsg"></div>
+        <div class="container">
+            <div class="columns col-12 flex-centered"
+                 id="printerselectform">
+                <label class="form-label text-center"
+                       for="input-example-1"
+                       id="labelprinterlistid">Sélectionner une
+                    imprimante :</label>
+                <select class="form-select text-center w-auto" id="printerlistid">
+                    <option>Chargement en cours...</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12 flex-around">
+            <button class="btn btn-primary"
+                    type="button"
+                    id="attrtoprnt">
+                Ajouter préfix
+            </button>
+            <button id="canceladdprefix"
+                    class="btn btn-error"
+                    type="button">
+                Annuler
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="columns">
+        <div class="column col-12 flex-centered" id="printerselectform55">
+            <div class="form-group">
+                <label class="form-label text-center"></label>
+                <button class="btn primary"
+                        id="openModaleNewPrefix"
+                        name="increase">
+                    Ajouter un préfixe
+                </button>
+            </div>
         </div>
         <div class="column col-12 flex-centered" id="selectdirectorytowatch">
-          <div class="form-group">
-            <label class="form-label text-center" for="">Sélectionner un dossier</label>
-            <button class="btn primary" id="btnselectdirtowatch">Parcourir</button>
-          </div>
+            <div class="form-group text-center column">
+                <!--                <div id="dirWatch"></div>-->
+                <label class="form-label text-center" id="dirtowatchLabel" for="">Sélectionner un dossier</label>
+                <div class="col-12 flex-centered">
+                    <button class="btn primary" id="btnselectdirtowatch">Parcourir</button>
+                </div>
+                <div id="dirWatch"></div>
+            </div>
         </div>
-        <div class="columns col-12" id="printerlistid">
-          
+        <div class="column col-12 flex-centered" id="printerlistid">
+            <div class="form-group text-center flex-centered">
+                <div class="col-12 flex-centered">
+                    <button id="disable" class="btn btn-primary mt-3">
+                        Activer l'impression
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="column col-12 flex-centered" id="informations">
-          <p class="text-tiny"> MIT Licence - Wiilog</p>
-        </div>
-
-      </div>
+                    <div class="col-12 text-center" id="informations"></div>
     </div>
-    <!-- Prossecc renderer -->
-    <script src="./renderer.js"></script>
-  </body>
+</div>
+<!-- Prossecc renderer -->
+<script src="./renderer.js"></script>
+</body>
 </html>

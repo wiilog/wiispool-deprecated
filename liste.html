@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="flex-centered m-h200">
+    <table class="prefix-liste-table">
+        <thead>
+        <tr>
+            <td>Préfixe</td>
+            <td>Imprimante</td>
+            <td colspan="2">Action</td>
+        </tr>
+        </thead>
+        <tbody id="prefix-liste"></tbody>
+    </table>
+</div>
+<div class="wii-modal modal-edit-association">
+    <input type="hidden"
+           id="hiddenPrefix">
+    <div class="flex-column">
+        <div class="container flex-around">
+            <label class="form-label text-center"
+                   for="name">Modifier le préfixe</label>
+            <input type="text"
+                   id="editprefix"
+                   name="prefixName"
+                   required>
+            <input type="hidden"
+                   id="prefixToEdit">
+        </div>
+        <div class="container">
+            <div class="columns col-12 flex-centered"
+                 id="printerselectform">
+                <label class="form-label text-center"
+                       for="input-example-1"
+                       id="labelprinterlistid">Sélectionner une imprimante :</label>
+                <select class="form-select text-center w-auto" id="printerlistid">
+                    <option>Chargement en cours...</option>
+                </select>
+            </div>
+        </div>
+        <div id="errorMsg"></div>
+        <div class="col-12 flex-around">
+            <button class="btn btn-primary"
+                    type="button"
+                    id="attrtoprntedit">
+                Modifier préfixe
+            </button>
+            <button id="canceleditprefix"
+                    class="btn btn-error"
+                    type="button">
+                Annuler
+            </button>
+        </div>
+        <div class="errorMsg"></div>
+    </div>
+</div>
+<script src="./public/js/liste.js"></script>
+</body>
+</html>
