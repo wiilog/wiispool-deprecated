@@ -199,6 +199,7 @@ btnaddassociation.addEventListener('click', (event) => {
 
                 clearInputValues();
                 $('#modalPrefix').removeClass('open');
+                $('#disable').removeClass('d-none') ;
             } else {
                 $('#errorMsg').text('Le prefixe : ' + prefix + ' est déja associé');
             }
@@ -213,8 +214,10 @@ dirToWatchLabelDiv.append(confValue.dirtowatch);
 cancelAddPrefix.addEventListener('click', (event) => {
     clearInputValues();
     $('#modalPrefix').removeClass('open');
+    $('#disable').removeClass('d-none') ;
 });
 
 addPrefix.addEventListener('click', (event) => {
     $('#modalPrefix').addClass('open');
+    $('#disable').addClass('d-none') ;
 });

@@ -179,7 +179,6 @@ ipcMain.handle('ipcSelectdir', async (event, someArgument) => {
   return watchdirectory
 })
 
-//event sur bouton selectdirtowatch
 ipcMain.handle('ipcInputAttr', async (event, someArgument) => {
     return document.getElementById('#prefixName').val()
 })
