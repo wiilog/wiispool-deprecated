@@ -1,14 +1,12 @@
-const {ipcMain, dialog, app, BrowserWindow, Menu} = require('electron'); // import des modules electron
 const {$, document} = require('jquery');
+const {ipcMain, dialog, app, BrowserWindow, Menu, electron} = require('electron'); // import des modules electron
 const fs = require('fs'); // besoin du module pour travailler sur les fichiers
 const path = require('path'); // besoin du mobule path
 const ptp = require("pdf-to-printer"); // besoin de pdf-to-printer
 const chokidar = require('chokidar');
 const {dir} = require("console");
-const jsonfile = require("jsonfile");
-const conffile = 'configuration.json';
-// pour le fileWatch
-
+const jsonFile = require("jsonfile");
+const confFile = 'configuration.json';
 const menu = Menu.buildFromTemplate([
     {
         label: "Accueil",
@@ -77,19 +75,26 @@ const menu = Menu.buildFromTemplate([
 ]);
 let confparam = {
     printer: '',
-    dirtowatch: dir,
+    dirtowatch: app.getPath('downloads'),
     attrtoprinter : undefined,
 };
-jsonfile.readFile(conffile, function (err, obj) {
+let dirwatcher = confparam.dirtowatch ?? app.getPath('downloads');
+let printers = '';
+let defaultprinter = '';
+let win;
+
+// this should be placed at top of main.js to handle setup events quickly
+if (handleSquirrelEvent(app)) {
+    // squirrel event handled and app will exit in 1000ms, so don't do anything else
+    return;
+}
+jsonFile.readFile(confFile, function (err, obj) {
     if (err) {
         //get the default printer
         ptp.getDefaultPrinter().then(function (value) {
             confparam.printer = value.deviceId
         })
         updateSelectPrinter(confparam.printer)
-        //set the default path to watch
-        // le dirwath par défaut est le rep de téléchargement de l'utilisateur connecté
-        confparam.dirtowatch = defaultdirectory
     }
     //if no error
     if (obj?.printer !== undefined) {
@@ -102,26 +107,16 @@ jsonfile.readFile(conffile, function (err, obj) {
         confparam.attrtoprinter = obj.attrtoprinter
     }
 })
-let dirwatcher = confparam.dirtowatch ?? app.getPath('downloads');
 
-let printers = '';
-let defaultprinter = '';
-let win;
 Menu.setApplicationMenu(menu);
-// this should be placed at top of main.js to handle setup events quickly
-if (handleSquirrelEvent(app)) {
-    // squirrel event handled and app will exit in 1000ms, so don't do anything else
-    return;
-}
 //get all printers of OS
 ptp.getPrinters().then((value) => {
   printers = value;
-  console.log(value);
 })
 
 ipcMain.handle('read-user-data', async (event, fileName) => {
     const path = electron.app.getPath('userData');
-    return await fs.promises.readFile(path.join(__dirname, conffile));
+    return await fs.promises.readFile(path.join(__dirname, confFile));
 })
 //definition d'une fenetre
 function createWindow() {
@@ -142,7 +137,7 @@ function createWindow() {
 
     win.loadFile('index.html')
     //ouverture de la console chrome
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

@@ -73,7 +73,7 @@ $(function () {
 });
 
 function refreshList() {
-    $("#prefix-liste").empty();
+    $('#prefix-liste').empty();
     confparam.attrtoprinter.forEach(({prefix, printer, id}) => {
         $("#prefix-liste").append(`
             <tr>
@@ -83,7 +83,6 @@ function refreshList() {
                 <td class="edit-logo edit-assoc" data-id="${prefix}"></td>
             </tr>
         `);
-        const divprinterlist = document.getElementById('printerlistid');
     });
 }
 
@@ -101,7 +100,7 @@ function updateSelectPrinter(printerselected) {
                 allprinterhtml += `<option>${value[x]['deviceId']}</option>`
             }
         }
-        divprinterlist.innerHTML = allprinterhtml
+        divprinterlist.append(allprinterhtml);
         allprinterhtml = ''
     })
 }

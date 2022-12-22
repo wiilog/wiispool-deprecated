@@ -1,13 +1,13 @@
 //dans le périmètre renderer
 const $ = require('jquery');
-const {ipcRenderer, dialog, app} = require("electron"); // import des modules electron
-const ptp = require("pdf-to-printer"); // besoin de pdf-to-printer
+const {ipcRenderer, app} = require('electron'); // import des modules electron
+const ptp = require('pdf-to-printer'); // besoin de pdf-to-printer
 const jsonfile = require('jsonfile')
 const {dir} = require('console');
 const conffile = 'configuration.json';
 const fs = require('fs');
 const chokidar = require('chokidar');
-const path = require("path");
+const path = require('path');
 //Sélecteur CSS sur index.html
 let disable = document.getElementById('disable');
 let printerform =$('#printerselectform');
@@ -22,12 +22,19 @@ let btnaddassociation = document.getElementById('attrtoprnt');
 let dirToWatchLabelDiv = $('#dirWatch');
 let openModaleNewPrefix = $('#openModaleNewPrefix');
 // const $dirWatch = $('#dirWatch');
-let confparam = {
-    printer: '',
-    dirtowatch: dir,
-    attrtoprinter: [],
-};
-jsonfile.readFile(conffile, function (err, obj) {
+let confparam;
+if (!JSON.parse(fs.readFileSync(path.join(__dirname, conffile)).toString())){
+     confparam = {
+        printer: '',
+        dirtowatch: null,
+        attrtoprinter: [],
+    };
+} else {
+    confparam = JSON.parse(fs.readFileSync(path.join(__dirname, conffile)).toString());
+}
+
+jsonfile.readFile(path.join(__dirname, conffile), function (err, obj) {
+    $('#disable').attr('disabled', obj.dirtowatch === null || obj.dirtowatch === undefined);
     if (err) {
         //get the default printer
         ptp.getDefaultPrinter().then(function (value) {
@@ -36,11 +43,11 @@ jsonfile.readFile(conffile, function (err, obj) {
         updateSelectPrinter(confparam.printer)
         //set the default path to watch
         // le dirwath par défaut est le rep de téléchargement de l'utilisateur connecté
-        confparam.dirtowatch = defaultdirectory
     }
     //if no error
     if (obj?.printer !== undefined) {
         confparam.printer = obj.printer
+        updateSelectPrinter(confparam.printer);
     }
     if (obj?.dirtowatch !== undefined) {
         confparam.dirtowatch = obj.dirtowatch
@@ -60,7 +67,6 @@ function moveFileAndPrintPdf(oldpath) {
     const index = confparam.attrtoprinter.map(object => object.prefix).indexOf(prefix);
     if (index > -1) {
         //set the new filepath
-        ipcRenderer.invoke('read-user-data', oldpath).then()
         fs.rename(oldpath, oldpath, function (err) {
                 if (err) {
                     throw err;
@@ -84,7 +90,7 @@ function deleteFile(filepath){
     fs.exists(filepath, function(exists) {
         if(exists) {
             // File exists deletings
-            fs.unlink(path.join(__dirname, conffile),function(err){
+            fs.unlink(filepath,function(err){
                 if(err){
                     alert("An error ocurred updating the file"+ err.message);
                     return;
@@ -96,7 +102,7 @@ function deleteFile(filepath){
     });
 }
 // récupération du rep dirwatcher defaut
-let defaultdirectory = confparam.dirtowatch ?? app.getPath('downloads');
+// let defaultdirectory = confparam.dirtowatch ?? app.getPath('downloads');
 
 function updateSelectPrinter(printerselected) {
 //essai de récup les imprimantes depuis renderer
@@ -117,61 +123,9 @@ function updateSelectPrinter(printerselected) {
     })
 }
 
-function clear() {
+function clearInputValues() {
     document.querySelectorAll('input').forEach((input) => {
         $(input).val('');
-    })
-}
-
-// lecture du fichier de conf
-conFfile = jsonfile.readFile(conffile, function (err, obj) {
-    if (err) {
-        //get the default printer
-        ptp.getDefaultPrinter().then(function (value) {
-            confparam.printer = value.deviceId
-        })
-        updateSelectPrinter(confparam.printer)
-        //set the default path to watch
-        // le dirwath par défaut est le rep de téléchargement de l'utilisateur connecté
-        confparam.dirtowatch = defaultdirectory
-    }
-    //if no error
-    if (obj?.printer !== undefined) {
-        confparam.printer = obj.printer
-        updateSelectPrinter(obj.printer)
-    }
-    if (obj?.dirtowatch !== undefined) {
-        confparam.dirtowatch = obj.dirtowatch
-    }
-    if (obj?.attrtoprinter !== undefined) {
-        confparam.attrtoprinter = obj.attrtoprinter
-    }
-    divprinterlist.val(confparam.printer);
-
-});
-
-function readconfFile() {
-    return jsonfile.readFile('configuration.json', function (err, obj) {
-        if (err) {
-            //get the default printer
-            ptp.getDefaultPrinter().then(function (value) {
-                confparam.printer = value.deviceId
-            })
-            updateSelectPrinter(confparam.printer)
-            //set the default path to watch
-            // le dirwath par défaut est le rep de téléchargement de l'utilisateur connecté
-            confparam.dirtowatch = defaultdirectory
-        }
-        //if no error
-        if (obj?.printer !== undefined) {
-            confparam.printer = obj.printer
-        }
-        if (obj?.dirtowatch !== undefined) {
-            confparam.dirtowatch = obj.dirtowatch
-        }
-        if (obj?.attrtoprinter !== undefined) {
-            confparam.attrtoprinter = obj.attrtoprinter
-        }
     })
 }
 
@@ -190,9 +144,7 @@ disable.addEventListener('click', (event) => {
     printerform.className = "d-none"
     selectdirectorytowatchform.className = "d-none"
     ipcRenderer.invoke('ipcRwritefile', confparam.dirtowatch).then((result) => {
-        //dialog.showErrorBox(result, result)
 
-        // enableWatchDirectory(confparam.dirtowatch);
         openModaleNewPrefix.addClass("d-none")
         disable.className = "btn disabled"
         disable.innerText = "Impression en cours"
@@ -203,8 +155,11 @@ disable.addEventListener('click', (event) => {
 
 btndirtowatch.addEventListener('click', (event) => {
     ipcRenderer.invoke('ipcSelectdir', 'test').then((result) => {
-        confparam.dirtowatch = result;
-        jsonfile.writeFile(conffile, confparam);
+        if (result !== undefined) {
+            confparam.dirtowatch = result;
+        }
+        $('#disable').attr('disabled', confparam.dirtowatch === undefined || confparam.dirtowatch === null);
+        jsonfile.writeFile(path.join(__dirname, conffile), confparam);
         dirToWatchLabelDiv.text(confparam.dirtowatch);
     })
 });
@@ -213,23 +168,40 @@ btnaddassociation.addEventListener('click', (event) => {
     const prefix = $('#prefixName').val();
     if (prefix) {
         const printer = $('#printerlistid').val();
-        console.log(confparam)
-        const uniquePrefix = confparam.attrtoprinter.map(object => object.prefix).indexOf(prefix) === -1;
-        if (uniquePrefix) {
-            let oldassoc = [confparam.attrtoprinter] ?? [];
-            let newassoc = [{'prefix': prefix, "printer": printer}];
-            let assoc = newassoc.concat(oldassoc).flat();
-            for (const key in assoc) {
-                if (assoc[key] === undefined) {
-                    delete assoc[key];
-                }
-            }
-            confparam.attrtoprinter = assoc;
-            jsonfile.writeFile(conffile, confparam);
-            clear();
-            $('#modalPrefix').removeClass('open');
+        if (confparam.attrtoprinter === undefined) {
+            confparam.attrtoprinter = [{'prefix': prefix, "printer": printer}];
+            fs.writeFile(path.join(__dirname, conffile), JSON.stringify(confparam), () => {
+            });
         } else {
-            $('#errorMsg').text('Le prefixe : ' + prefix + ' est déja associé');
+            const uniquePrefix = confparam.attrtoprinter.map(object => object.prefix).indexOf(prefix) === -1;
+            if (uniquePrefix) {
+                let oldassoc = [confparam.attrtoprinter] ?? [];
+                let newassoc = [{'prefix': prefix, "printer": printer}];
+                let assoc = newassoc.concat(oldassoc).flat();
+                for (const key in assoc) {
+                    if (assoc[key] === null) {
+                        delete assoc[key];
+                    }
+                }
+                confparam.attrtoprinter = assoc;
+                fs.writeFile(path.join(__dirname, conffile), JSON.stringify(confparam), () => {
+                });
+                confparam.attrtoprinter.forEach(({prefix, printer, id}) => {
+                    $("#prefix-liste").append(`
+            <tr>
+                <td>${prefix}</td>
+                <td>${printer}</td>
+                <td class="trash-logo delete-assoc" data-id="${prefix}"></td>
+                <td class="edit-logo edit-assoc" data-id="${prefix}"></td>
+            </tr>
+        `);
+                });
+
+                clearInputValues();
+                $('#modalPrefix').removeClass('open');
+            } else {
+                $('#errorMsg').text('Le prefixe : ' + prefix + ' est déja associé');
+            }
         }
     } else {
         $('#errorMsg').text('Le prefixe doit être renseigné');
@@ -239,7 +211,7 @@ btnaddassociation.addEventListener('click', (event) => {
 let confValue = JSON.parse(fs.readFileSync(path.join(__dirname, conffile)).toString());
 dirToWatchLabelDiv.append(confValue.dirtowatch);
 cancelAddPrefix.addEventListener('click', (event) => {
-    clear();
+    clearInputValues();
     $('#modalPrefix').removeClass('open');
 });
 
