@@ -74,6 +74,8 @@ function moveFileAndPrintPdf(oldpath) {
                     //set printer
                     let optionsimpression = {
                         printer: confparam.attrtoprinter[index].printer,
+                        scale: "fit",
+                        orientation: "landscape",
                         win32: []
                     }
                     //run print
