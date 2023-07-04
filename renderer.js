@@ -74,10 +74,10 @@ function moveFileAndPrintPdf(oldpath) {
                     //set printer
                     let optionsimpression = {
                         printer: confparam.attrtoprinter[index].printer,
-                        scale: "fit",
+                        scale: "noscale",
                         orientation: "landscape",
                         win32: []
-                    }
+                    };
                     //run print
                     ptp.print(oldpath, optionsimpression).then( () =>
                         deleteFile(oldpath)
