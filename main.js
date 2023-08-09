@@ -137,7 +137,7 @@ function createWindow() {
 
     win.loadFile('index.html')
     //ouverture de la console chrome
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
